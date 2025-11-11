@@ -1,0 +1,41 @@
+import final23-02-2019.*
+
+describe "test de ventas - final 23-02-19" {
+  const produA = new Producto (nombreProducto = "primer producto", precio = 1500)
+  const produB = new Producto (nombreProducto = "segundo producto", precio = 5000)
+  const produC = new Producto (nombreProducto = "tercer producto", precio = 500)
+  const empresa = new Empresa(productos=[produA, produB])
+  const cliente = new Cliente(dineroDisponible = 3000)
+  const clienteAdinerado = new Cliente(dineroDisponible = 10000)
+
+  test "Empresa vende producto en stock a cliente con suficiente dinero" {
+    empresa.vendeProducto(produA, cliente)
+    assert.equals(1, empresa.productos().size())
+  }
+
+  test "Se quiere vender un producto que no hay en stock, excepcion" {
+    assert.throwsException({ empresa.vendeProducto(produC, cliente) })
+  }
+
+  test "Cliente quiere comprar sin suficiene dinero, excepcion" {
+    assert.throwsException({ empresa.vendeProducto(produB, cliente) })
+  }
+
+  test "Se aplica descuento a cliente regular en primer venta" {
+    empresa.vendeProducto(produA, clienteAdinerado)
+    assert.equals(8650, clienteAdinerado.dineroDisponible())
+  }
+
+  test "No se aplica descuento a cliente regular, después de primer venta" {
+    empresa.vendeProducto(produA, clienteAdinerado)
+    empresa.vendeProducto(produB, clienteAdinerado)
+    assert.equals(3650, clienteAdinerado.dineroDisponible())
+  }
+
+  test "Cliente cambia a VIP y realiza compra con descuento" {
+    cliente.cambiarTipoCliente(new TipoVip(descuento = 0.25))
+    empresa.vendeProducto(produA, cliente)
+    assert.equals(1875, cliente.dineroDisponible())
+  }
+
+}
