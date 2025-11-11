@@ -1,0 +1,29 @@
+import pdePinia.*
+
+describe "Test de boxeadoras en gimnasio" {
+    const boxeadoraA = new Boxeadora(experiencia = 50)
+    const boxeadoraB = new Boxeadora(experiencia = 140000)
+    const gimnasio = new Gimnasio(boxeadoras=[boxeadoraA, boxeadoraB])
+    test "Boxeadora Amateur con poca experiencia NO asciende a profesional" {
+        gimnasio.reevaluarRangoDeBoxeadoras()
+        assert.equals("a RangoAmateur", boxeadoraA.rango().toString())
+    }
+
+    test "Boxeadora Amateur con suficiente experiencia asciende a profesional" {
+        gimnasio.reevaluarRangoDeBoxeadoras()
+        assert.equals("a RangoProfesional", boxeadoraB.rango().toString())
+    }
+
+    test "Boxeadora profesional asciende a campeona" {
+        gimnasio.reevaluarRangoDeBoxeadoras()
+        gimnasio.reevaluarRangoDeBoxeadoras()
+        assert.equals("a RangoCampeona", boxeadoraB.rango().toString())
+    }
+
+    test "Boxeadora campeona mantiene su rango" {
+        gimnasio.reevaluarRangoDeBoxeadoras()
+        gimnasio.reevaluarRangoDeBoxeadoras()
+        gimnasio.reevaluarRangoDeBoxeadoras()
+        assert.equals("a RangoCampeona", boxeadoraB.rango().toString())
+    }
+}

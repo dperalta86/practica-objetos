@@ -18,7 +18,7 @@ class Gimnasio{
 }
 
 class Boxeadora{
-    var experiencia = 100
+    var property experiencia
     var vitalidad = 100
     var resistencia = 10
     var fuerza = 100
@@ -28,6 +28,8 @@ class Boxeadora{
     method cambiarRango(nuevoRango) {
         rango = nuevoRango
     }
+
+    method rango() = rango 
 
     method promocionarRango() {
         rango.promocionarRango(self)      
